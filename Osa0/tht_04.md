@@ -25,7 +25,7 @@ sequenceDiagram
     
     browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
     activate server
-    server->>browser: HTTP-statuscode 302, redirect
+    server-->>browser: HTTP-statuscode 302, redirect
     deactivate server
     
     Note right of browser: Browser refreshes, causes three other HTTP-requests
