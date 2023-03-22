@@ -1,5 +1,12 @@
 import { useState } from 'react'
 
+const StatisticLine = ({text, value}) =>(
+  <tr>
+    <td>{text}</td>
+    <td>{value}</td>
+  </tr> 
+)
+
 const Stats = (props) => {
   if (props.Total == 0) {
     return (
@@ -12,12 +19,14 @@ const Stats = (props) => {
   }  
   return( 
     <div>
-      <p><strong>Good:</strong> {props.Good}</p>
-      <p><strong>Neutral:</strong> {props.Neutral}</p>
-      <p><strong>Bad:</strong> {props.Bad}</p>
-      <p><strong>Total:</strong> {props.Total}</p>
-      <p><strong>Average:</strong> {(props.Good-props.Bad)/props.Total}</p>
-      <p><strong>Positive:</strong> {(props.Good)/props.Total*100}%</p>
+      <table>
+        <StatisticLine text="Good" value={props.Good} />
+        <StatisticLine text="Neutral" value={props.Neutral} />
+        <StatisticLine text="Bad" value={props.Bad} />
+        <StatisticLine text="Total" value={props.Total} />
+        <StatisticLine text="Average" value={(props.Good-props.Bad)/props.Total} />
+        <StatisticLine text="Poaitive" value={((props.Good)/props.Total*100).toString().concat("%")} />
+      </table>
     </div>
   )
 }
@@ -28,7 +37,6 @@ const Button = ({ handleClick, text }) => (
     {text}  
   </button>
 )
-
 
 const App = () => {
   const [Good, setGood] = useState(0)
