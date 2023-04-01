@@ -40,6 +40,17 @@ const Persons = ({persons, remove}) => {
   </div>)}
 
 
+const Notification = ({ message }) => {
+  if (message === null) {
+    return null
+  }
+
+  return (
+    <div className="error">
+      {message}
+    </div>
+  )
+}
 
 
 const App = () => {
@@ -59,7 +70,7 @@ const App = () => {
   const [showAll, setShowAll] = useState(true)
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
-  const [newId, setNewId] = useState('')
+  const [errorMessage, setErrorMessage] = useState(null)
 
 
   const addName = (event) => { 
@@ -79,6 +90,8 @@ const App = () => {
     const phoneObj = { name: newName, number:newNumber, id:persons.length+1} 
 
   personService.create(phoneObj).then(response => {
+    setErrorMessage(`Added ${newName}`)
+    setTimeout(()=> {setErrorMessage(null)}, 3000)
     setPersons(persons.concat(phoneObj))
     setNewName("")
     setNewNumber("")
@@ -125,13 +138,15 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={errorMessage} />
+
       <Filter filterChange={handleFilterChange} />
 
       <h3>add a new</h3>
       <PersonForm name={newName} number={newNumber} nameEvent={handleNameChange} numberEvent={handleNumberChange} add={addName} />
 
       <h2>Numbers</h2>
-        <Persons persons={showAll ? persons:filteredList } remove={Remove}/>
+      <Persons persons={showAll ? persons:filteredList } remove={Remove}/>
         
     </div>
   )
