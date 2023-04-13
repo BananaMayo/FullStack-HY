@@ -1,0 +1,8 @@
+POST http://localhost:3003/api/blogs
+
+{
+  "title": "Welcome Blog",
+  "author": "audreyobrien",
+  "url": "https://shop-grwm.com/outfit-ideas/welcome-blog/",
+  "likes": 21
+}
