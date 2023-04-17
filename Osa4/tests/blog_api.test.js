@@ -1,76 +1,84 @@
 const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
-
 const api = supertest(app)
-
 const Blog = require('../models/blog')
+const helper = require('./test_helper')
 
-const initialBlogs = [
-  {
-    _id: '5a422a851b54a676234d17f7',
-    title: 'React patterns',
-    author: 'Michael Chan',
-    url: 'https://reactpatterns.com/',
-    likes: 7,
-    __v: 0
-  },
-  {
-    _id: '5a422aa71b54a676234d17f8',
-    title: 'Go To Statement Considered Harmful',
-    author: 'Edsger W. Dijkstra',
-    url:
-      'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
-    likes: 5,
-    __v: 0
-  }
-]
 
 beforeEach(async () => {
   await Blog.deleteMany({})
   let blogObject = new
-  Blog(initialBlogs[0])
+  Blog(helper.initialBlogs[0])
   await blogObject.save()
-  blogObject = new Blog(initialBlogs[1])
+  blogObject = new Blog(helper.initialBlogs[1])
   await blogObject.save()
 })
 
-test('blogs are returned as json', async () => {
-  await api
-    .get('/api/blogs')
-    .expect(200)
-    .expect('Content-Type', /application\/json/)
+
+describe('Getting blogs', () => {
+  test('blogs are returned as json', async () => {
+    await api
+      .get('/api/blogs')
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+  })
+
+  test('all blogs are returned', async () => {
+    const response = await api.get('/api/blogs')
+
+    expect(response.body).toHaveLength(helper.initialBlogs.length)})
+
+  test('Unique identifier property is by default id', async () => {
+    const blogs = await Blog.find({})
+    expect(blogs[0].id).toBeDefined()
+  })
 })
 
-test('all blogs are returned', async () => {
-  const response = await api.get('/api/blogs')
 
-  expect(response.body).toHaveLength(initialBlogs.length)})
+describe('Adding blogs', () => {
+  test('Adding blog increases the total amount of blogs', async() => {
+    const newBlog = {
+      title: 'Canonical string reduction',
+      author: 'Edsger W. Dijkstra',
+      url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
+      likes: 12,
+    }
 
-test('Unique identifier property is by default id', async () => {
-  const blogs = await Blog.find({})
-  expect(blogs[0].id).toBeDefined()
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    const updatedBlog = await Blog.find({})
+    expect(updatedBlog.length).toBe(helper.initialBlogs.length + 1)
+
+    const title = updatedBlog.map(variable => variable.title)
+    expect(title).toContain('Canonical string reduction')
+  })
 })
 
-test('Adding blog increases the total amount of blogs', async() => {
-  const newBlog = {
-    title: 'Canonical string reduction',
-    author: 'Edsger W. Dijkstra',
-    url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
-    likes: 12,
-  }
 
-  await api
-  .post('/api/blogs')
-  .send(newBlog)
-  .expect(201)
-  .expect('Content-Type', /application\/json/)
+describe('Deletion of a blog', () => {
+  test('succeeds with status code 204 if id is valid', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToDelete = blogsAtStart[0]
 
-  const updatedBlog = await Blog.find({})
-  expect(updatedBlog.length).toBe(initialBlogs.length + 1)
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .expect(204)
 
-  const title = updatedBlog.map(variable => variable.title)
-  expect(title).toContain('Canonical string reduction')
+    const blogsAtEnd = await helper.blogsInDb()
+
+    expect(blogsAtEnd).toHaveLength(
+      helper.initialBlogs.length - 1
+    )
+
+    const title = blogsAtEnd.map(variable => variable.title)
+
+    expect(title).not.toContain(blogToDelete.title)
+  })
 })
 
 afterAll(async () => {
