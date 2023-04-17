@@ -81,6 +81,27 @@ describe('Deletion of a blog', () => {
   })
 })
 
+
+describe('Test updating blog', () =>{
+  test('update blog', async () => {
+    const blogs = await helper.blogsInDb()
+    const blogToUpdate = blogs[0]
+
+    blogToUpdate.title = "Better title"
+
+    await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send(blogToUpdate)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    const updatedBlogs = await helper.blogsInDb()
+    const blogList = updatedBlogs.map(blog => blog.title)
+    expect(blogList).toContain("Better title")
+  })
+})
+
+
 afterAll(async () => {
   await mongoose.connection.close()
 })
