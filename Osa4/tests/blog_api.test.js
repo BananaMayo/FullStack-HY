@@ -52,6 +52,27 @@ test('Unique identifier property is by default id', async () => {
   expect(blogs[0].id).toBeDefined()
 })
 
+test('Adding blog increases the total amount of blogs', async() => {
+  const newBlog = {
+    title: 'Canonical string reduction',
+    author: 'Edsger W. Dijkstra',
+    url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
+    likes: 12,
+  }
+
+  await api
+  .post('/api/blogs')
+  .send(newBlog)
+  .expect(201)
+  .expect('Content-Type', /application\/json/)
+
+  const updatedBlog = await Blog.find({})
+  expect(updatedBlog.length).toBe(initialBlogs.length + 1)
+
+  const title = updatedBlog.map(variable => variable.title)
+  expect(title).toContain('Canonical string reduction')
+})
+
 afterAll(async () => {
   await mongoose.connection.close()
 })

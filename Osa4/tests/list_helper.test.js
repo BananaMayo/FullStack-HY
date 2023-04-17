@@ -2,34 +2,34 @@ const listHelper = require('../utils/list_helper')
 
 const blogs = [
   {
-    _id: "6437b90d3e2cc2539cd63f4a",
-    title: "Welcome Blog",
-    author: "audreyobrien",
-    url: "https://shop-grwm.com/outfit-ideas/welcome-blog/",
+    _id: '6437b90d3e2cc2539cd63f4a',
+    title: 'Welcome Blog',
+    author: 'audreyobrien',
+    url: 'https://shop-grwm.com/outfit-ideas/welcome-blog/',
     likes: 21,
     __v: 0
   },
   {
-    _id: "6437b90d3e2dd2539cd63f4a",
-    title: "Best lifestyle blog examples",
-    author: "Mies Saukko",
-    url: "https://firstsiteguide.com/examples-of-blogs/#lifestyle-blogs",
+    _id: '6437b90d3e2dd2539cd63f4a',
+    title: 'Best lifestyle blog examples',
+    author: 'Mies Saukko',
+    url: 'https://firstsiteguide.com/examples-of-blogs/#lifestyle-blogs',
     likes: 132,
     __v: 0
   },
   {
-    _id: "6437b90d3e2bb2539cd63f4a",
-    title: "Best mom blog examples",
-    author: "Mommy",
-    url: "https://firstsiteguide.com/examples-of-blogs/#mom-blogs",
+    _id: '6437b90d3e2bb2539cd63f4a',
+    title: 'Best mom blog examples',
+    author: 'Mommy',
+    url: 'https://firstsiteguide.com/examples-of-blogs/#mom-blogs',
     likes: 69,
     __v: 0
   },
   {
-    _id: "6437b90d3e2aa2539cd63f4a",
-    title: "Best food blog examples",
-    author: "Foodie Man",
-    url: "https://firstsiteguide.com/examples-of-blogs/#food-blogs",
+    _id: '6437b90d3e2aa2539cd63f4a',
+    title: 'Best food blog examples',
+    author: 'Foodie Man',
+    url: 'https://firstsiteguide.com/examples-of-blogs/#food-blogs',
     likes: 15,
     __v: 0
   },
@@ -70,9 +70,9 @@ describe ('Favorite blog', () => {
   test('favorite blog is the one with most likes', () => {
     const result = listHelper.favoriteBlog(blogs)
     expect(result).toEqual({
-    title: "Best lifestyle blog examples",
-    author: "Mies Saukko",
-    likes: 132,
+      title: 'Best lifestyle blog examples',
+      author: 'Mies Saukko',
+      likes: 132,
     })
   })
   test('empty list test incase of an empty list', () => {
