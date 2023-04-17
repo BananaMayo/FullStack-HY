@@ -87,7 +87,7 @@ describe('Test updating blog', () =>{
     const blogs = await helper.blogsInDb()
     const blogToUpdate = blogs[0]
 
-    blogToUpdate.title = "Better title"
+    blogToUpdate.title = 'Better title'
 
     await api
       .put(`/api/blogs/${blogToUpdate.id}`)
@@ -97,7 +97,7 @@ describe('Test updating blog', () =>{
 
     const updatedBlogs = await helper.blogsInDb()
     const blogList = updatedBlogs.map(blog => blog.title)
-    expect(blogList).toContain("Better title")
+    expect(blogList).toContain('Better title')
   })
 })
 
