@@ -47,6 +47,10 @@ test('all blogs are returned', async () => {
 
   expect(response.body).toHaveLength(initialBlogs.length)})
 
+test('Unique identifier property is by default id', async () => {
+  const blogs = await Blog.find({})
+  expect(blogs[0].id).toBeDefined()
+})
 
 afterAll(async () => {
   await mongoose.connection.close()
