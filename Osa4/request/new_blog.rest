@@ -1,9 +1,24 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sdXVra2FpIiwiaWQiOiI2NDNkNDQ4OGVmM2Y2NjI5OTc5YThmMzIiLCJpYXQiOjE2ODE4OTU2NjgsImV4cCI6MTY4MTg5OTI2OH0.Gkjzcw3J9HkIit1elG5S6NclZ_txNXj45Jvimi5zpJc
 
 {
   "title": "Welcome Blog",
   "author": "audreyobrien",
   "url": "https://shop-grwm.com/outfit-ideas/welcome-blog/",
   "likes": 21
+}
+
+
+
+### My Guy blog
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sdXVra2FpIiwiaWQiOiI2NDNkNDQ4OGVmM2Y2NjI5OTc5YThmMzIiLCJpYXQiOjE2ODE4OTU2NjgsImV4cCI6MTY4MTg5OTI2OH0.Gkjzcw3J9HkIit1elG5S6NclZ_txNXj45Jvimi5zpJc
+
+{
+  "title": "The Blog",
+  "author": "myguy",
+  "url": "https://myguy.com",
+  "likes": 100
 }
