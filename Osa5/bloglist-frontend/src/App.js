@@ -119,8 +119,9 @@ const App = () => {
       <Togglable buttonLabel= "create new blog" ref={blogFormRef}>
         <BlogForm createBlog={createBlog}/>
       </Togglable>
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+      <br></br>
+      {blogs.sort(SortByLikes).map(blog =>
+        <Blog key={blog.id} blog={blog} updateBlog={updateBlog} deleteBlog={deleteBlog} />
       )}
     </div>
   )
@@ -128,11 +129,48 @@ const App = () => {
   const createBlog = async(event) => {
     blogFormRef.current.toggleVisibility()
     const newBlog = await blogService.create(event)
-    setBlogs(blogs.concat(newBlog))
+    const blogs = await blogService.getAll()
+    setBlogs(blogs)
     setSuccessMessage(`a new blog ${newBlog.title} by ${newBlog.author} added`)
     setTimeout(() => {
       setSuccessMessage(null)
     }, 5000)
+  }
+
+  const updateBlog = async (BlogToUpdate) => {
+    try {
+      const updatedBlog = await blogService
+        .update(BlogToUpdate)
+
+      const blogs = await blogService.getAll()
+      setBlogs(blogs)      
+    } catch(exception) {
+      setErrorMessage(
+        `Error updating blog ${BlogToUpdate.title}`
+      )
+      setSuccessMessage(null)
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
+  }
+
+  const deleteBlog = async (DeletedBlog) => {
+    try {
+      if (window.confirm(`Remove blog ${DeletedBlog.title} by ${DeletedBlog.author}?`)) {
+        blogService
+          .remove(DeletedBlog.id)
+
+        setBlogs(blogs.filter(blog => blog.id !== DeletedBlog.id))
+      }
+    } catch(exception) {
+      setErrorMessage(
+        `Failed while deleting blog ${DeletedBlog.title}`
+      )
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
   }
 
   const logOut = () => {
@@ -140,6 +178,7 @@ const App = () => {
     setUser(null)
   }
 
+  const SortByLikes = (x, y) => y.likes - x.likes
 
   return (
     <div>
