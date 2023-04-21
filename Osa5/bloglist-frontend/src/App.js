@@ -1,8 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import BlogForm from './components/blogform'
+import Togglable from './components/Togglable'
+
 
 const Notification = ({ message }) => {
   if (message === null) {
@@ -35,6 +37,8 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState(null)
   const [successMessage, setSuccessMessage] = useState(null)
   const [user, setUser] = useState(null)
+
+  const blogFormRef = useRef()
 
   useEffect(() => {
     async function FetchData() {
@@ -112,7 +116,9 @@ const App = () => {
       <BlogNotification message={successMessage} />
       <div><form onSubmit={logOut}><p>{user.name} logged in <button>logout</button></p></form>
       </div>
-      <BlogForm createBlog={createBlog}/>
+      <Togglable buttonLabel= "create new blog" ref={blogFormRef}>
+        <BlogForm createBlog={createBlog}/>
+      </Togglable>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
@@ -120,6 +126,7 @@ const App = () => {
   )
 
   const createBlog = async(event) => {
+    blogFormRef.current.toggleVisibility()
     const newBlog = await blogService.create(event)
     setBlogs(blogs.concat(newBlog))
     setSuccessMessage(`a new blog ${newBlog.title} by ${newBlog.author} added`)
