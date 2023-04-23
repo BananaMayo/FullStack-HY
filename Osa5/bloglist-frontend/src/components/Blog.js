@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState } from 'react'
 import PropTypes from 'prop-types'
 
 const Blog = (props) => {
@@ -14,7 +14,7 @@ const Blog = (props) => {
     borderWidth: 1,
     marginBottom: 5
   }
-  
+
   const likeIncreases = () => {
     const updatedBlog = ({
       ...blog,
@@ -39,10 +39,10 @@ const Blog = (props) => {
       <div style={showWhenVisible}>
         <p>{blog.url}</p>
         <p>likes {BlogObj.likes} <button id='like-button' onClick={likeIncreases}>like</button></p>
-        {blog.user ? <p> {blog.user.name} </p> : ""}
+        {blog.user ? <p> {blog.user.name} </p> : ''}
         <button id='remove' onClick={removeBlog}>remove</button>
       </div>
-    </div> 
+    </div>
   )
 }
 

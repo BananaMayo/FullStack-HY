@@ -55,32 +55,32 @@ const App = () => {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
       blogService.setToken(user.token)
-    }  
+    }
   }, [])
 
   const loginForm = () => (
     <form onSubmit={handleLogin}>
-        <h2>Login to application</h2>
-        <Notification message={errorMessage} />
-        <div>
+      <h2>Login to application</h2>
+      <Notification message={errorMessage} />
+      <div>
           username
-          <input
-           type="text"
-           value={username}
-           name="Username"
-           onChange={({ target }) => setUsername(target.value)}
-           />
-        </div>
-        <div>
+        <input
+          type="text"
+          value={username}
+          name="Username"
+          onChange={({ target }) => setUsername(target.value)}
+        />
+      </div>
+      <div>
           password
-          <input
+        <input
           type="password"
           value={password}
           name="Password"
           onChange={({ target }) => setPassword(target.value)}
-          />
-        </div>
-        <button type="submit">login</button>
+        />
+      </div>
+      <button type="submit">login</button>
     </form>
   )
 
@@ -92,7 +92,7 @@ const App = () => {
         username,
         password,
       })
-      
+
       window.localStorage.setItem(
         'loggedNoteappUser', JSON.stringify(user)
       )
@@ -100,7 +100,7 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
-    } 
+    }
     catch (exception) {
       setErrorMessage('wrong username or password')
       setTimeout(() => {
@@ -110,7 +110,7 @@ const App = () => {
   }
 
 
-  const showBlogs = () =>(
+  const showBlogs = () => (
     <div>
       <h2>blogs</h2>
       <BlogNotification message={successMessage} />
@@ -139,11 +139,11 @@ const App = () => {
 
   const updateBlog = async (BlogToUpdate) => {
     try {
-      const updatedBlog = await blogService
+      await blogService
         .update(BlogToUpdate)
 
       const blogs = await blogService.getAll()
-      setBlogs(blogs)      
+      setBlogs(blogs)
     } catch(exception) {
       setErrorMessage(
         `Error updating blog ${BlogToUpdate.title}`
@@ -182,12 +182,12 @@ const App = () => {
 
   return (
     <div>
-        {user === null && loginForm()}
-        {user && 
+      {user === null && loginForm()}
+      {user &&
         <div>
-            {showBlogs()}
+          {showBlogs()}
         </div>
-        }
+      }
     </div>
   )
 }
